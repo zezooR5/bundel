@@ -1,5 +1,6 @@
 import React from 'react';
 import { FolderArchive, PlusCircle, RotateCcw, ImageDown } from 'lucide-react';
+import { assetUrl } from '../utils/assets';
 
 interface HeaderProps {
   onNewBundle: () => void;
@@ -27,7 +28,7 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center gap-3.5">
           <div className="flex items-center h-11">
             <img 
-              src="/assets/logos/elbadry-trade-transparent.png" 
+              src={assetUrl('assets/logos/elbadry-trade-transparent.png')} 
               alt="Elbadry Trade" 
               className="h-10 w-auto object-contain"
             />
@@ -37,7 +38,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           <div className="hidden sm:flex items-center h-11">
             <img 
-              src="/assets/logos/ugreen-white-text-transparent.png" 
+              src={assetUrl('assets/logos/ugreen-white-text-transparent.png')} 
               alt="UGREEN" 
               className="h-8 w-auto object-contain"
             />

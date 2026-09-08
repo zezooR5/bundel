@@ -1,4 +1,5 @@
 import { Bundle } from '../types/bundle';
+import { assetUrl } from '../utils/assets';
 
 export const DEFAULT_BUNDLE: Bundle = {
   id: 'bundle-demo-3',
@@ -16,7 +17,7 @@ export const DEFAULT_BUNDLE: Bundle = {
       quantity: 5,
       originalUnitPrice: 1400,
       bundleUnitPrice: 1033,
-      imageUrl: '/assets/products/ugreen-powerbank-real.png',
+      imageUrl: assetUrl('assets/products/ugreen-powerbank-real.png'),
       imageFit: 'contain'
     },
     {
@@ -26,7 +27,7 @@ export const DEFAULT_BUNDLE: Bundle = {
       quantity: 10,
       originalUnitPrice: 232,
       bundleUnitPrice: 170,
-      imageUrl: '/assets/products/ugreen-cable-real.png',
+      imageUrl: assetUrl('assets/products/ugreen-cable-real.png'),
       imageFit: 'contain'
     },
     {
@@ -36,7 +37,7 @@ export const DEFAULT_BUNDLE: Bundle = {
       quantity: 10,
       originalUnitPrice: 600,
       bundleUnitPrice: 445,
-      imageUrl: '/assets/products/ugreen-charger-real.png',
+      imageUrl: assetUrl('assets/products/ugreen-charger-real.png'),
       imageFit: 'contain'
     }
   ],

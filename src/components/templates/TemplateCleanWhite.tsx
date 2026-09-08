@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Bundle, BundleCalculations } from '../../types/bundle';
 import { formatNumber } from '../../utils/calculations';
+import { assetUrl } from '../../utils/assets';
 import { ShieldCheck, Phone, MapPin, Sparkles } from 'lucide-react';
 
 interface TemplateProps {
@@ -39,7 +40,7 @@ export const TemplateCleanWhite: React.FC<TemplateProps> = ({ bundle, calc }) =>
       {/* ELBADRY TRADE WATERMARK IN BACKGROUND */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden z-0">
         <img 
-          src="/assets/logos/elbadry-trade-transparent.png" 
+          src={assetUrl('assets/logos/elbadry-trade-transparent.png')} 
           alt="" 
           className="w-[880px] max-w-none h-auto object-contain opacity-[0.09] filter select-none transform rotate-[-12deg]"
         />
@@ -52,7 +53,7 @@ export const TemplateCleanWhite: React.FC<TemplateProps> = ({ bundle, calc }) =>
           {/* Al Badry Trade Logo */}
           <div className="flex items-center h-24 filter drop-shadow-sm">
             <img 
-              src="/assets/logos/elbadry-trade-transparent.png" 
+              src={assetUrl('assets/logos/elbadry-trade-transparent.png')} 
               alt="Al Badry Trade" 
               className="h-24 w-auto object-contain"
             />
@@ -63,7 +64,7 @@ export const TemplateCleanWhite: React.FC<TemplateProps> = ({ bundle, calc }) =>
           {/* UGREEN Logo */}
           <div className="flex items-center h-24 filter drop-shadow-sm">
             <img 
-              src="/assets/logos/ugreen-transparent.png" 
+              src={assetUrl('assets/logos/ugreen-transparent.png')} 
               alt="UGREEN" 
               className="h-20 w-auto object-contain"
             />

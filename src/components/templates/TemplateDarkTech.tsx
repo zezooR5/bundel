@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Bundle, BundleCalculations } from '../../types/bundle';
 import { formatNumber } from '../../utils/calculations';
+import { assetUrl } from '../../utils/assets';
 import { ShieldCheck, Zap, Phone, MapPin, Sparkles } from 'lucide-react';
 
 interface TemplateProps {
@@ -36,7 +37,7 @@ export const TemplateDarkTech: React.FC<TemplateProps> = ({ bundle, calc }) => {
       {/* ELBADRY TRADE WATERMARK IN THE BACKGROUND */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden z-0">
         <img 
-          src="/assets/logos/elbadry-trade-transparent.png" 
+          src={assetUrl('assets/logos/elbadry-trade-transparent.png')} 
           alt="" 
           className="w-[780px] h-auto object-contain opacity-[0.06] filter drop-shadow-2xl select-none transform rotate-[-12deg] scale-110"
         />
@@ -47,7 +48,7 @@ export const TemplateDarkTech: React.FC<TemplateProps> = ({ bundle, calc }) => {
         <div className="flex items-center gap-6">
           <div className="flex items-center h-20 filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]">
             <img 
-              src="/assets/logos/elbadry-trade-transparent.png" 
+              src={assetUrl('assets/logos/elbadry-trade-transparent.png')} 
               alt="Al Badry Trade" 
               className="h-20 w-auto object-contain"
             />
@@ -57,7 +58,7 @@ export const TemplateDarkTech: React.FC<TemplateProps> = ({ bundle, calc }) => {
 
           <div className="flex items-center h-20 filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]">
             <img 
-              src="/assets/logos/ugreen-white-text-transparent.png" 
+              src={assetUrl('assets/logos/ugreen-white-text-transparent.png')} 
               alt="UGREEN" 
               className="h-16 w-auto object-contain"
             />
