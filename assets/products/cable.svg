@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-opacity="0.3"/>
+    </filter>
+    <linearGradient id="metal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="50%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="goldPin" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+  </defs>
+  
+  <g filter="url(#shadow)">
+    <!-- Coiled braided cable -->
+    <path d="M 120 280 C 60 220, 60 140, 150 110 C 260 80, 340 160, 310 250 C 290 320, 190 340, 140 300 C 100 270, 110 200, 170 170 C 230 140, 290 190, 270 250" 
+          fill="none" stroke="#1e293b" stroke-width="16" stroke-linecap="round" stroke-dasharray="2, 4"/>
+    <path d="M 120 280 C 60 220, 60 140, 150 110 C 260 80, 340 160, 310 250 C 290 320, 190 340, 140 300 C 100 270, 110 200, 170 170 C 230 140, 290 190, 270 250" 
+          fill="none" stroke="#334155" stroke-width="12" stroke-linecap="round"/>
+
+    <!-- Left USB-C Connector -->
+    <g transform="translate(100, 270) rotate(-45)">
+      <!-- Strain relief -->
+      <rect x="15" y="10" width="10" height="20" rx="3" fill="#0f172a"/>
+      <!-- Shell -->
+      <rect x="0" y="25" width="40" height="48" rx="8" fill="url(#metal)"/>
+      <text x="20" y="55" text-anchor="middle" fill="#94a3b8" font-family="-apple-system, sans-serif" font-size="7" font-weight="800">UGREEN</text>
+      <!-- Plug tip -->
+      <rect x="8" y="73" width="24" height="22" rx="4" fill="#cbd5e1"/>
+      <rect x="12" y="80" width="16" height="6" rx="2" fill="url(#goldPin)"/>
+    </g>
+
+    <!-- Right USB-C Connector -->
+    <g transform="translate(250, 210) rotate(45)">
+      <!-- Strain relief -->
+      <rect x="15" y="10" width="10" height="20" rx="3" fill="#0f172a"/>
+      <!-- Shell -->
+      <rect x="0" y="25" width="40" height="48" rx="8" fill="url(#metal)"/>
+      <text x="20" y="55" text-anchor="middle" fill="#94a3b8" font-family="-apple-system, sans-serif" font-size="7" font-weight="800">UGREEN</text>
+      <!-- Plug tip -->
+      <rect x="8" y="73" width="24" height="22" rx="4" fill="#cbd5e1"/>
+      <rect x="12" y="80" width="16" height="6" rx="2" fill="url(#goldPin)"/>
+    </g>
+  </g>
+</svg>
