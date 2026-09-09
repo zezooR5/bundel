@@ -95,35 +95,34 @@ export const TemplateCleanWhite: React.FC<TemplateProps> = ({ bundle, calc }) =>
         )}
       </div>
 
-      {/* PRODUCTS GRID - WITH ENLARGED QUANTITY BADGES */}
+      {/* PRODUCTS GRID - ENLARGED & CLOSE-UP */}
       <div 
         className={`relative z-10 flex-1 grid ${
           isThree ? 'grid-cols-3' : 'grid-cols-2'
         } gap-4 my-2 content-center`}
       >
         {bundle.products.map((product, index) => {
-          const prodCalc = calc.productCalculations.find(p => p.id === product.id);
-
           if (isThree) {
-            // 3-Product Vertical Card with ENLARGED QUANTITY BADGE
+            // 3-Product Vertical Card with ENLARGED IMAGE & CLEAR PRICING
             return (
               <div 
                 key={product.id || index}
                 className="relative bg-white/95 border-2 border-emerald-500/30 hover:border-[#00b06f] rounded-2xl p-4 flex flex-col justify-between shadow-lg hover:shadow-xl transition-all group overflow-hidden"
               >
                 {/* ENLARGED QUANTITY BADGE */}
-                <div className="absolute top-3 right-3 bg-[#00b06f] text-white font-black text-sm px-4 py-1.5 rounded-full shadow-lg shadow-emerald-600/30 border border-white/50 z-10 flex items-center gap-1.5">
+                <div className="absolute top-3 right-3 bg-[#00b06f] text-white font-black text-sm px-3.5 py-1.5 rounded-full shadow-lg shadow-emerald-600/30 border border-white/50 z-10 flex items-center gap-1.5">
                   <span className="text-xs opacity-90">الكمية:</span>
                   <span className="text-base font-black leading-none">{product.quantity}</span>
                   <span className="text-[11px] font-bold">قطع</span>
                 </div>
 
-                {/* Balanced Product Image */}
-                <div className="h-32 w-full bg-gradient-to-b from-slate-50 to-emerald-50/30 rounded-2xl p-2.5 border border-slate-200/80 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform duration-300 my-1">
+                {/* Significantly Enlarged Product Image Container */}
+                <div className="relative h-48 sm:h-52 w-full bg-gradient-to-b from-slate-50 to-emerald-50/40 rounded-2xl p-3 border border-emerald-500/25 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform duration-300 my-1 overflow-hidden">
+                  <div className="absolute inset-0 bg-emerald-500/5 rounded-2xl blur-lg pointer-events-none" />
                   <img 
                     src={product.imageUrl} 
                     alt={product.name}
-                    className="max-h-28 max-w-full object-contain filter drop-shadow-[0_8px_12px_rgba(0,0,0,0.12)]"
+                    className="max-h-44 max-w-full object-contain filter drop-shadow-[0_12px_20px_rgba(0,0,0,0.15)] relative z-10"
                   />
                 </div>
 
@@ -134,36 +133,33 @@ export const TemplateCleanWhite: React.FC<TemplateProps> = ({ bundle, calc }) =>
                       SKU: {product.sku}
                     </span>
                   )}
-                  <h3 className="text-base font-black text-slate-900 leading-snug line-clamp-2 mt-1 min-h-[2.8rem]">
+                  <h3 className="text-sm lg:text-base font-black text-slate-900 leading-snug line-clamp-2 mt-1 min-h-[2.6rem]">
                     {product.name}
                   </h3>
 
                   {/* Pricing Info: Prominent Original vs Bundle Price */}
-                  <div className="mt-2.5 flex flex-col items-center">
+                  <div className="mt-2.5 flex flex-col items-center gap-1.5">
                     {product.originalUnitPrice > product.bundleUnitPrice && (
-                      <div className="flex items-center gap-1 text-xs font-bold text-slate-500 line-through decoration-rose-500/80 decoration-2">
-                        <span className="text-[11px] font-semibold text-slate-400 no-underline">بدلاً من:</span>
-                        <span>{formatNumber(product.originalUnitPrice)} {bundle.currency}</span>
+                      <div className="flex items-center flex-wrap justify-center gap-1.5 bg-rose-50 border-2 border-rose-200 px-3 py-1 rounded-xl shadow-sm">
+                        <span className="text-xs font-black text-rose-600">بدلاً من:</span>
+                        <span className="text-sm sm:text-base font-black text-slate-600 line-through decoration-rose-600 decoration-2">
+                          {formatNumber(product.originalUnitPrice)} {bundle.currency}
+                        </span>
+                        <span className="text-[11px] font-black bg-rose-600 text-white px-2 py-0.5 rounded-md shadow-sm">
+                          وفر {formatNumber(product.originalUnitPrice - product.bundleUnitPrice)}
+                        </span>
                       </div>
                     )}
                     <div className="flex items-baseline justify-center gap-1.5 mt-0.5">
-                      <span className="text-xl lg:text-2xl font-black text-[#00b06f]">
+                      <span className="text-2xl lg:text-3xl font-black text-[#00b06f]">
                         {formatNumber(product.bundleUnitPrice)}
                       </span>
-                      <span className="text-xs font-black text-emerald-950">{bundle.currency}</span>
-                      <span className="text-[10px] font-extrabold text-[#00b06f] bg-emerald-50 border border-emerald-500/30 px-1.5 py-0.5 rounded">
+                      <span className="text-xs font-black text-slate-900">{bundle.currency}</span>
+                      <span className="text-[11px] font-bold text-[#00b06f] bg-emerald-50 border border-emerald-500/30 px-2 py-0.5 rounded">
                         للقطعة
                       </span>
                     </div>
                   </div>
-
-                  {/* Subtotal */}
-                  {prodCalc && (
-                    <div className="text-xs font-bold text-slate-700 mt-2 bg-emerald-50/90 border border-emerald-500/30 py-1.5 px-3 rounded-xl flex items-center justify-between">
-                      <span className="text-slate-500">إجمالي {product.quantity} قطع:</span>
-                      <span className="text-sm font-black text-slate-950">{formatNumber(prodCalc.bundleTotal)} {bundle.currency}</span>
-                    </div>
-                  )}
                 </div>
               </div>
             );
@@ -173,7 +169,7 @@ export const TemplateCleanWhite: React.FC<TemplateProps> = ({ bundle, calc }) =>
           return (
             <div 
               key={product.id || index}
-              className="relative bg-white/95 border-2 border-emerald-500/30 hover:border-[#00b06f] rounded-2xl p-4 flex items-center gap-4 shadow-lg hover:shadow-xl transition-all group overflow-hidden"
+              className="relative bg-white/95 border-2 border-emerald-500/30 hover:border-[#00b06f] rounded-2xl p-4 flex items-center gap-5 shadow-lg hover:shadow-xl transition-all group overflow-hidden"
             >
               {/* ENLARGED QUANTITY BADGE */}
               <div className="absolute top-3 right-3 bg-[#00b06f] text-white font-black text-sm px-4 py-1.5 rounded-full shadow-lg shadow-emerald-600/30 border border-white/50 z-10 flex items-center gap-1.5">
@@ -182,48 +178,49 @@ export const TemplateCleanWhite: React.FC<TemplateProps> = ({ bundle, calc }) =>
                 <span className="text-[11px] font-bold">قطع</span>
               </div>
 
-              <div className="w-28 h-28 flex-shrink-0 bg-gradient-to-b from-slate-50 to-emerald-50/40 rounded-2xl p-2.5 border border-slate-200/80 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform duration-300">
+              {/* Significantly Enlarged Product Image */}
+              <div className="relative w-44 h-44 sm:w-48 sm:h-48 flex-shrink-0 bg-gradient-to-b from-slate-50 to-emerald-50/50 rounded-2xl p-3 border border-emerald-500/25 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform duration-300 overflow-hidden">
+                <div className="absolute inset-0 bg-emerald-500/5 rounded-2xl blur-lg pointer-events-none" />
                 <img 
                   src={product.imageUrl} 
                   alt={product.name}
-                  className="w-full h-full object-contain filter drop-shadow-[0_10px_15px_rgba(0,0,0,0.15)]"
+                  className="w-full h-full object-contain filter drop-shadow-[0_12px_20px_rgba(0,0,0,0.18)] relative z-10"
                 />
               </div>
 
-              <div className="flex-1 min-w-0 pr-16">
+              <div className="flex-1 min-w-0 pr-12">
                 {product.sku && (
                   <span className="text-[11px] font-mono text-[#00b06f] font-extrabold uppercase tracking-wider block">
                     SKU: {product.sku}
                   </span>
                 )}
-                <h3 className="text-base font-black text-slate-900 leading-snug line-clamp-2 mt-1">
+                <h3 className="text-base lg:text-lg font-black text-slate-900 leading-snug line-clamp-2 mt-1">
                   {product.name}
                 </h3>
 
-                <div className="mt-2 flex flex-col items-start gap-0.5">
+                {/* Clear strikethrough & unit offer price */}
+                <div className="mt-3 flex flex-col items-start gap-1.5">
                   {product.originalUnitPrice > product.bundleUnitPrice && (
-                    <div className="flex items-center gap-1 text-xs font-bold text-slate-500 line-through decoration-rose-500/80 decoration-2">
-                      <span className="text-[11px] font-semibold text-slate-400 no-underline">بدلاً من:</span>
-                      <span>{formatNumber(product.originalUnitPrice)} {bundle.currency}</span>
+                    <div className="inline-flex items-center gap-2 bg-rose-50 border-2 border-rose-200 px-3 py-1 rounded-xl shadow-sm">
+                      <span className="text-xs font-black text-rose-600">بدلاً من:</span>
+                      <span className="text-sm sm:text-base font-black text-slate-600 line-through decoration-rose-600 decoration-2">
+                        {formatNumber(product.originalUnitPrice)} {bundle.currency}
+                      </span>
+                      <span className="text-[11px] font-black bg-rose-600 text-white px-2 py-0.5 rounded-md shadow-sm">
+                        وفر {formatNumber(product.originalUnitPrice - product.bundleUnitPrice)} {bundle.currency}
+                      </span>
                     </div>
                   )}
-                  <div className="flex items-baseline gap-1.5">
-                    <span className="text-xl font-black text-[#00b06f]">
+                  <div className="flex items-baseline gap-1.5 mt-0.5">
+                    <span className="text-2xl lg:text-3xl font-black text-[#00b06f]">
                       {formatNumber(product.bundleUnitPrice)}
                     </span>
-                    <span className="text-xs font-black text-emerald-950">{bundle.currency}</span>
-                    <span className="text-[10px] font-extrabold text-[#00b06f] bg-emerald-50 border border-emerald-500/30 px-1.5 py-0.2 rounded">
+                    <span className="text-xs font-black text-slate-900">{bundle.currency}</span>
+                    <span className="text-[11px] font-bold text-[#00b06f] bg-emerald-50 border border-emerald-500/30 px-2 py-0.5 rounded">
                       للقطعة
                     </span>
                   </div>
                 </div>
-
-                {prodCalc && (
-                  <div className="text-xs font-bold text-slate-700 mt-2 bg-emerald-50/90 border border-emerald-500/30 py-1.5 px-3 rounded-xl flex items-center justify-between">
-                    <span className="text-slate-500">إجمالي {product.quantity} قطع:</span>
-                    <span className="text-sm font-black text-slate-950">{formatNumber(prodCalc.bundleTotal)} {bundle.currency}</span>
-                  </div>
-                )}
               </div>
             </div>
           );
@@ -233,36 +230,36 @@ export const TemplateCleanWhite: React.FC<TemplateProps> = ({ bundle, calc }) =>
       {/* PRICING HERO: BOLD GREEN HIGHLIGHT BAR */}
       <div className="relative z-10 mt-3 p-5 rounded-2xl bg-white border-2 border-[#00b06f] shadow-2xl flex flex-wrap items-center justify-between gap-4">
         {/* Left: Original Price & Savings */}
-        <div className="flex items-center gap-6">
-          <div>
-            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">
-              Original Price / السعر الأصلي
+        <div className="flex items-center gap-5">
+          <div className="bg-slate-50 border border-slate-200 px-4 py-2.5 rounded-xl">
+            <span className="text-xs font-bold text-slate-600 block mb-0.5">
+              السعر الأصلي الإجمالي
             </span>
-            <div className="text-xl font-bold text-slate-400 line-through mt-0.5">
+            <div className="text-xl font-bold text-rose-600 line-through decoration-rose-500 decoration-2">
               {formatNumber(calc.totalOriginalPrice)} {bundle.currency}
             </div>
           </div>
 
-          <div className="h-10 w-[2px] bg-slate-200" />
+          <div className="h-12 w-[2px] bg-slate-200" />
 
-          <div>
-            <span className="text-xs font-black text-[#00b06f] uppercase tracking-wider block">
-              You Save / إجمالي التوفير
+          <div className="bg-emerald-50 border border-emerald-200 px-4 py-2.5 rounded-xl">
+            <span className="text-xs font-black text-[#00b06f] block mb-0.5">
+              إجمالي التوفير في العرض
             </span>
-            <div className="text-xl font-black text-[#00b06f] mt-0.5 flex items-center gap-2">
+            <div className="text-xl font-black text-[#00b06f] flex items-center gap-2">
               <span>{formatNumber(calc.totalSavings)} {bundle.currency}</span>
-              <span className="bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs px-2.5 py-0.5 rounded-full font-black">
-                {calc.discountPercentage}% OFF
+              <span className="bg-[#00b06f] text-white text-xs px-2.5 py-0.5 rounded-md font-black shadow">
+                وفر {calc.discountPercentage}%
               </span>
             </div>
           </div>
         </div>
 
         {/* Right: Big Prominent Bundle Price */}
-        <div className="bg-[#00b06f] text-white px-7 py-3 rounded-xl shadow-xl shadow-emerald-600/30 flex items-center gap-3">
+        <div className="bg-[#00b06f] text-white px-8 py-3.5 rounded-xl shadow-xl shadow-emerald-600/30 flex items-center gap-3">
           <div className="text-right">
-            <span className="text-[10px] font-black uppercase tracking-widest text-emerald-100 block">
-              SPECIAL BUNDLE PRICE
+            <span className="text-[11px] font-black uppercase tracking-widest text-emerald-100 block">
+              سعر الباقة الخاص
             </span>
             <span className="text-3xl lg:text-4xl font-black tracking-tight leading-none text-white">
               {formatNumber(calc.finalBundlePrice)}
@@ -270,7 +267,7 @@ export const TemplateCleanWhite: React.FC<TemplateProps> = ({ bundle, calc }) =>
           </div>
           <div className="border-l-2 border-white/30 pl-3">
             <span className="text-base font-black block leading-tight">{bundle.currency}</span>
-            <span className="text-[10px] font-extrabold block text-emerald-100">شامل العرض</span>
+            <span className="text-[10px] font-bold block opacity-90">شامل العرض</span>
           </div>
         </div>
       </div>

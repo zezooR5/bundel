@@ -12,6 +12,8 @@ export const TemplateB2BCatalog: React.FC<TemplateProps> = ({ bundle, calc }) =>
   const isPortrait = bundle.aspectRatio === '4:5';
   const isStory = bundle.aspectRatio === '9:16';
 
+  const isThree = bundle.products.length === 3;
+
   return (
     <div 
       className={`relative w-full h-full flex flex-col justify-between overflow-hidden bg-slate-900 text-slate-100 select-none ${
@@ -21,7 +23,7 @@ export const TemplateB2BCatalog: React.FC<TemplateProps> = ({ bundle, calc }) =>
         background: 'linear-gradient(180deg, #0b1120 0%, #0f172a 50%, #020617 100%)'
       }}
     >
-      {/* ELBADRY TRADE WATERMARK BACKGROUND (علامة مائية ناعمة في الخلفية) */}
+      {/* ELBADRY TRADE WATERMARK BACKGROUND */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden z-0">
         <img 
           src="/assets/logos/elbadry-trade-transparent.png" 
@@ -85,21 +87,82 @@ export const TemplateB2BCatalog: React.FC<TemplateProps> = ({ bundle, calc }) =>
         </div>
       </div>
 
-      {/* Products Structured Cards - Enlarged Product Visuals! */}
-      <div className="relative z-10 flex-1 grid grid-cols-2 gap-4 my-2 content-center">
+      {/* Products Structured Cards - ENLARGED & CLOSE-UP */}
+      <div 
+        className={`relative z-10 flex-1 grid ${
+          isThree ? 'grid-cols-3' : 'grid-cols-2'
+        } gap-4 my-2 content-center`}
+      >
         {bundle.products.map((product, index) => {
-          const prodCalc = calc.productCalculations.find(p => p.id === product.id);
+          if (isThree) {
+            return (
+              <div 
+                key={product.id || index}
+                className="relative bg-slate-800/90 border border-slate-700 rounded-xl p-4 flex flex-col justify-between shadow-lg hover:border-emerald-500/50 transition-colors group overflow-hidden"
+              >
+                {/* Quantity */}
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-[11px] font-mono text-emerald-400 uppercase tracking-wider font-bold">
+                    {product.sku || `ITEM #${index + 1}`}
+                  </span>
+                  <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-black text-xs px-3 py-1 rounded-full">
+                    الكمية: {product.quantity} قطع
+                  </span>
+                </div>
+
+                {/* Significantly Enlarged Product Image */}
+                <div className="relative h-48 sm:h-52 w-full bg-slate-900 rounded-xl p-3 border border-slate-700/60 flex items-center justify-center my-2 group-hover:scale-105 transition-transform duration-300 overflow-hidden">
+                  <div className="absolute inset-0 bg-emerald-500/5 rounded-xl blur-lg pointer-events-none" />
+                  <img 
+                    src={product.imageUrl} 
+                    alt={product.name}
+                    className="max-h-44 max-w-full object-contain filter drop-shadow-md relative z-10"
+                  />
+                </div>
+
+                <h3 className="text-sm lg:text-base font-bold text-white leading-tight line-clamp-2 mt-1 min-h-[2.5rem]">
+                  {product.name}
+                </h3>
+
+                {/* Clear Pricing Breakdown */}
+                <div className="mt-2.5 pt-2 border-t border-slate-700/60 flex flex-col items-center gap-1.5">
+                  {product.originalUnitPrice > product.bundleUnitPrice && (
+                    <div className="flex items-center flex-wrap justify-center gap-1.5 bg-rose-950/60 border border-rose-500/40 px-3 py-1 rounded-lg">
+                      <span className="text-xs font-black text-rose-400">بدلاً من:</span>
+                      <span className="text-sm sm:text-base font-black text-slate-200 line-through decoration-rose-500 decoration-2">
+                        {formatNumber(product.originalUnitPrice)} {bundle.currency}
+                      </span>
+                      <span className="text-[11px] font-black bg-rose-500 text-white px-2 py-0.5 rounded-md shadow-sm">
+                        وفر {formatNumber(product.originalUnitPrice - product.bundleUnitPrice)}
+                      </span>
+                    </div>
+                  )}
+                  <div className="flex items-baseline gap-1.5 mt-0.5">
+                    <span className="text-2xl font-black text-emerald-400">
+                      {formatNumber(product.bundleUnitPrice)}
+                    </span>
+                    <span className="text-xs font-bold text-slate-300">{bundle.currency}</span>
+                    <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/20 px-1.5 py-0.5 rounded">
+                      للقطعة
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
           return (
             <div 
               key={product.id || index}
-              className="relative bg-slate-800/90 border border-slate-700 rounded-xl p-4 flex items-center gap-4 shadow-lg hover:border-emerald-500/50 transition-colors group"
+              className="relative bg-slate-800/90 border border-slate-700 rounded-xl p-4 flex items-center gap-5 shadow-lg hover:border-emerald-500/50 transition-colors group overflow-hidden"
             >
-              {/* Product Image - ENLARGED */}
-              <div className="w-28 h-28 sm:w-32 sm:h-32 flex-shrink-0 bg-slate-900 rounded-xl p-2.5 border border-slate-700/60 flex items-center justify-center">
+              {/* Significantly Enlarged Product Image */}
+              <div className="relative w-44 h-44 sm:w-48 sm:h-48 flex-shrink-0 bg-slate-900 rounded-xl p-3 border border-slate-700/60 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform duration-300 overflow-hidden">
+                <div className="absolute inset-0 bg-emerald-500/5 rounded-xl blur-lg pointer-events-none" />
                 <img 
-                  src={product.imageUrl || '/assets/products/earbuds.svg'} 
+                  src={product.imageUrl} 
                   alt={product.name}
-                  className="w-full h-full object-contain filter drop-shadow-md group-hover:scale-110 transition-transform duration-300"
+                  className="w-full h-full object-contain filter drop-shadow-md relative z-10"
                 />
               </div>
 
@@ -109,32 +172,37 @@ export const TemplateB2BCatalog: React.FC<TemplateProps> = ({ bundle, calc }) =>
                   <span className="text-[11px] font-mono text-emerald-400 uppercase tracking-wider font-bold">
                     {product.sku || `ITEM #${index + 1}`}
                   </span>
-                  <span className="bg-slate-700 text-white font-extrabold text-xs px-2.5 py-0.5 rounded">
-                    x{product.quantity} PCS
+                  <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-black text-xs px-3 py-1 rounded-full">
+                    الكمية: {product.quantity} قطع
                   </span>
                 </div>
 
-                <h3 className="text-sm font-bold text-white leading-tight line-clamp-2 mt-1">
+                <h3 className="text-base lg:text-lg font-bold text-white leading-tight line-clamp-2 mt-2">
                   {product.name}
                 </h3>
 
-                {/* Pricing Table / Breakdown */}
-                <div className="mt-2.5 pt-2 border-t border-slate-700/60 flex items-center justify-between text-xs">
-                  <div>
-                    <span className="text-slate-400 block text-[10px] uppercase">Unit Wholesale:</span>
-                    <span className="font-black text-emerald-400 text-sm">
-                      {formatNumber(product.bundleUnitPrice)} {bundle.currency}
-                    </span>
-                  </div>
-
-                  {prodCalc && (
-                    <div className="text-right">
-                      <span className="text-slate-400 block text-[10px] uppercase">Subtotal ({product.quantity}x):</span>
-                      <span className="font-bold text-white text-sm">
-                        {formatNumber(prodCalc.bundleTotal)} {bundle.currency}
+                {/* Clear Pricing Breakdown */}
+                <div className="mt-3 pt-2 border-t border-slate-700/60 flex flex-col items-start gap-1.5">
+                  {product.originalUnitPrice > product.bundleUnitPrice && (
+                    <div className="inline-flex items-center gap-2 bg-rose-950/60 border border-rose-500/40 px-3 py-1 rounded-lg">
+                      <span className="text-xs font-black text-rose-400">بدلاً من:</span>
+                      <span className="text-sm sm:text-base font-black text-slate-200 line-through decoration-rose-500 decoration-2">
+                        {formatNumber(product.originalUnitPrice)} {bundle.currency}
+                      </span>
+                      <span className="text-[11px] font-black bg-rose-500 text-white px-2 py-0.5 rounded-md shadow-sm">
+                        وفر {formatNumber(product.originalUnitPrice - product.bundleUnitPrice)} {bundle.currency}
                       </span>
                     </div>
                   )}
+                  <div className="flex items-baseline gap-1.5 mt-0.5">
+                    <span className="text-2xl lg:text-3xl font-black text-emerald-400">
+                      {formatNumber(product.bundleUnitPrice)}
+                    </span>
+                    <span className="text-xs font-bold text-slate-300">{bundle.currency}</span>
+                    <span className="text-[11px] font-bold text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded">
+                      للقطعة
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -143,27 +211,27 @@ export const TemplateB2BCatalog: React.FC<TemplateProps> = ({ bundle, calc }) =>
       </div>
 
       {/* Pricing Summary Bar */}
-      <div className="relative z-10 mt-3 p-4 rounded-xl bg-slate-800/90 border-2 border-emerald-500/50 shadow-2xl flex flex-wrap items-center justify-between gap-4">
+      <div className="relative z-10 mt-3 p-5 rounded-xl bg-slate-800/90 border-2 border-emerald-500/50 shadow-2xl flex flex-wrap items-center justify-between gap-4">
         {/* Breakdown Left */}
-        <div className="flex items-center gap-6">
-          <div>
-            <span className="text-[10px] font-mono uppercase text-slate-400 tracking-wider block">
-              TOTAL LIST PRICE
+        <div className="flex items-center gap-5">
+          <div className="bg-slate-900/80 border border-slate-700 px-4 py-2.5 rounded-xl">
+            <span className="text-xs font-mono uppercase text-slate-400 tracking-wider block mb-0.5">
+              السعر الأصلي الإجمالي
             </span>
-            <span className="text-lg font-bold text-slate-400 line-through">
+            <span className="text-xl font-bold text-rose-400 line-through decoration-rose-500 decoration-2">
               {formatNumber(calc.totalOriginalPrice)} {bundle.currency}
             </span>
           </div>
 
-          <div className="h-8 w-px bg-slate-700" />
+          <div className="h-12 w-px bg-slate-700" />
 
-          <div>
-            <span className="text-[10px] font-mono uppercase text-emerald-400 tracking-wider block">
-              TOTAL B2B SAVINGS
+          <div className="bg-emerald-950/50 border border-emerald-500/40 px-4 py-2.5 rounded-xl">
+            <span className="text-xs font-mono uppercase text-emerald-400 tracking-wider block mb-0.5">
+              إجمالي التوفير بالجملة
             </span>
-            <span className="text-lg font-extrabold text-emerald-400 flex items-center gap-1.5">
+            <span className="text-xl font-black text-emerald-400 flex items-center gap-2">
               <span>{formatNumber(calc.totalSavings)} {bundle.currency}</span>
-              <span className="bg-emerald-500/20 text-emerald-300 text-xs px-2 py-0.5 rounded font-black">
+              <span className="bg-emerald-500 text-slate-950 text-xs px-2.5 py-0.5 rounded font-black">
                 -{calc.discountPercentage}%
               </span>
             </span>
@@ -171,10 +239,10 @@ export const TemplateB2BCatalog: React.FC<TemplateProps> = ({ bundle, calc }) =>
         </div>
 
         {/* Big Bundle Price Right */}
-        <div className="bg-gradient-to-r from-emerald-600 to-teal-500 text-slate-950 px-7 py-3 rounded-lg shadow-lg flex items-center gap-3">
+        <div className="bg-gradient-to-r from-emerald-600 to-teal-500 text-slate-950 px-8 py-3.5 rounded-lg shadow-lg flex items-center gap-3">
           <div className="text-right">
-            <span className="text-[10px] font-black uppercase tracking-widest text-slate-900 block">
-              WHOLESALE BUNDLE PRICE
+            <span className="text-[11px] font-black uppercase tracking-widest text-slate-900 block">
+              سعر العرض الإجمالي
             </span>
             <span className="text-3xl lg:text-4xl font-black tracking-tight leading-none text-slate-950">
               {formatNumber(calc.finalBundlePrice)}

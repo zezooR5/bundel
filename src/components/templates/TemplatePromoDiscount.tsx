@@ -12,6 +12,8 @@ export const TemplatePromoDiscount: React.FC<TemplateProps> = ({ bundle, calc })
   const isPortrait = bundle.aspectRatio === '4:5';
   const isStory = bundle.aspectRatio === '9:16';
 
+  const isThree = bundle.products.length === 3;
+
   return (
     <div 
       className={`relative w-full h-full flex flex-col justify-between overflow-hidden bg-slate-900 text-white select-none ${
@@ -25,7 +27,7 @@ export const TemplatePromoDiscount: React.FC<TemplateProps> = ({ bundle, calc })
       <div className="absolute -top-24 -right-24 w-[500px] h-[500px] bg-amber-500/15 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/2 -left-20 w-[500px] h-[500px] bg-emerald-500/20 rounded-full blur-3xl pointer-events-none" />
       
-      {/* ELBADRY TRADE WATERMARK BACKGROUND (علامة مائية ناعمة في الخلفية) */}
+      {/* ELBADRY TRADE WATERMARK BACKGROUND */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden z-0">
         <img 
           src="/assets/logos/elbadry-trade-transparent.png" 
@@ -94,14 +96,79 @@ export const TemplatePromoDiscount: React.FC<TemplateProps> = ({ bundle, calc })
         )}
       </div>
 
-      {/* Products Grid - Enlarged Products! */}
-      <div className="relative z-10 flex-1 grid grid-cols-2 gap-4 my-2 content-center">
+      {/* Products Grid - ENLARGED & CLOSE-UP */}
+      <div 
+        className={`relative z-10 flex-1 grid ${
+          isThree ? 'grid-cols-3' : 'grid-cols-2'
+        } gap-4 my-2 content-center`}
+      >
         {bundle.products.map((product, index) => {
-          const prodCalc = calc.productCalculations.find(p => p.id === product.id);
+          if (isThree) {
+            return (
+              <div 
+                key={product.id || index}
+                className="relative bg-gradient-to-b from-slate-800/90 to-slate-900/95 border-2 border-slate-700/60 hover:border-amber-500/60 rounded-2xl p-4 flex flex-col justify-between shadow-xl transition-all group overflow-hidden"
+              >
+                {/* Floating Qty Pill */}
+                <div className="absolute top-3 right-3 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black text-sm px-3.5 py-1.5 rounded-full shadow-lg shadow-orange-500/30 border border-white/40 z-10 flex items-center gap-1.5">
+                  <span className="text-xs font-bold opacity-90">الكمية:</span>
+                  <span className="text-base font-black leading-none">{product.quantity}</span>
+                  <span className="text-[11px] font-bold">قطع</span>
+                </div>
+
+                {/* Significantly Enlarged Product Image */}
+                <div className="relative h-48 sm:h-52 w-full bg-slate-950/80 rounded-2xl p-3 border border-slate-700/60 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform duration-300 my-1 overflow-hidden">
+                  <div className="absolute inset-0 bg-amber-500/10 rounded-2xl blur-xl pointer-events-none" />
+                  <img 
+                    src={product.imageUrl} 
+                    alt={product.name}
+                    className="max-h-44 max-w-full object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.6)] relative z-10"
+                  />
+                </div>
+
+                {/* Product Info */}
+                <div className="mt-2 text-center">
+                  {product.sku && (
+                    <span className="text-[11px] font-mono text-amber-400 font-extrabold uppercase tracking-wider block">
+                      {product.sku}
+                    </span>
+                  )}
+                  <h3 className="text-sm lg:text-base font-black text-white leading-snug line-clamp-2 mt-1 min-h-[2.6rem]">
+                    {product.name}
+                  </h3>
+
+                  {/* Clear strikethrough & unit offer price */}
+                  <div className="mt-2.5 flex flex-col items-center gap-1.5">
+                    {product.originalUnitPrice > product.bundleUnitPrice && (
+                      <div className="flex items-center flex-wrap justify-center gap-1.5 bg-rose-950/70 border-2 border-rose-500/50 px-3 py-1 rounded-xl shadow-md">
+                        <span className="text-xs font-black text-rose-400">بدلاً من:</span>
+                        <span className="text-sm sm:text-base font-black text-slate-100 line-through decoration-rose-500 decoration-2">
+                          {formatNumber(product.originalUnitPrice)} {bundle.currency}
+                        </span>
+                        <span className="text-[11px] font-black bg-rose-500 text-white px-2 py-0.5 rounded-md shadow-sm">
+                          وفر {formatNumber(product.originalUnitPrice - product.bundleUnitPrice)}
+                        </span>
+                      </div>
+                    )}
+                    <div className="flex items-baseline justify-center gap-1.5 mt-0.5">
+                      <span className="text-2xl lg:text-3xl font-black text-emerald-400">
+                        {formatNumber(product.bundleUnitPrice)}
+                      </span>
+                      <span className="text-xs font-bold text-emerald-300">{bundle.currency}</span>
+                      <span className="text-[11px] font-bold bg-amber-500/25 text-amber-300 px-2 py-0.5 rounded">
+                        للقطعة
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
           return (
             <div 
               key={product.id || index}
-              className="relative bg-gradient-to-b from-slate-800/90 to-slate-900/95 border-2 border-slate-700/60 hover:border-amber-500/60 rounded-2xl p-4 flex items-center gap-4 shadow-xl transition-all group"
+              className="relative bg-gradient-to-b from-slate-800/90 to-slate-900/95 border-2 border-slate-700/60 hover:border-amber-500/60 rounded-2xl p-4 flex items-center gap-5 shadow-xl transition-all group overflow-hidden"
             >
               {/* Floating Qty Pill */}
               <div className="absolute top-3 right-3 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black text-sm px-4 py-1.5 rounded-full shadow-lg shadow-orange-500/30 border border-white/40 z-10 flex items-center gap-1.5">
@@ -110,46 +177,50 @@ export const TemplatePromoDiscount: React.FC<TemplateProps> = ({ bundle, calc })
                 <span className="text-[11px] font-bold">قطع</span>
               </div>
 
-              {/* Product Image - ENLARGED */}
-              <div className="w-32 h-32 sm:w-36 sm:h-36 flex-shrink-0 bg-slate-950/70 rounded-2xl p-3 border border-slate-700/50 flex items-center justify-center">
+              {/* Significantly Enlarged Product Image */}
+              <div className="relative w-44 h-44 sm:w-48 sm:h-48 flex-shrink-0 bg-slate-950/80 rounded-2xl p-3 border border-slate-700/60 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform duration-300 overflow-hidden">
+                <div className="absolute inset-0 bg-amber-500/10 rounded-2xl blur-xl pointer-events-none" />
                 <img 
-                  src={product.imageUrl || '/assets/products/earbuds.svg'} 
+                  src={product.imageUrl} 
                   alt={product.name}
-                  className="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.5)] group-hover:scale-110 transition-transform duration-300"
+                  className="w-full h-full object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.6)] relative z-10"
                 />
               </div>
 
               {/* Product Info */}
-              <div className="flex-1 min-w-0 pr-10">
+              <div className="flex-1 min-w-0 pr-12">
                 {product.sku && (
                   <span className="text-[11px] font-mono text-amber-400 font-extrabold uppercase tracking-wider block">
                     {product.sku}
                   </span>
                 )}
-                <h3 className="text-sm lg:text-base font-bold text-white leading-snug line-clamp-2 mt-1">
+                <h3 className="text-base lg:text-lg font-black text-white leading-snug line-clamp-2 mt-1">
                   {product.name}
                 </h3>
 
-                {/* Price */}
-                <div className="mt-2 flex items-baseline gap-2">
-                  <span className="text-lg font-black text-emerald-400">
-                    {formatNumber(product.bundleUnitPrice)} <span className="text-xs text-emerald-300">{bundle.currency}</span>
-                  </span>
+                {/* Clear strikethrough & unit offer price */}
+                <div className="mt-3 flex flex-col items-start gap-1.5">
                   {product.originalUnitPrice > product.bundleUnitPrice && (
-                    <span className="text-xs text-slate-400 line-through">
-                      {formatNumber(product.originalUnitPrice)}
-                    </span>
+                    <div className="inline-flex items-center gap-2 bg-rose-950/70 border-2 border-rose-500/50 px-3 py-1 rounded-xl shadow-md">
+                      <span className="text-xs font-black text-rose-400">بدلاً من:</span>
+                      <span className="text-sm sm:text-base font-black text-slate-100 line-through decoration-rose-500 decoration-2">
+                        {formatNumber(product.originalUnitPrice)} {bundle.currency}
+                      </span>
+                      <span className="text-[11px] font-black bg-rose-500 text-white px-2 py-0.5 rounded-md shadow-sm">
+                        وفر {formatNumber(product.originalUnitPrice - product.bundleUnitPrice)} {bundle.currency}
+                      </span>
+                    </div>
                   )}
-                </div>
-
-                {prodCalc && (
-                  <div className="text-xs text-slate-300 mt-1.5 flex items-center gap-1">
-                    <span>إجمالي ({product.quantity}x):</span>
-                    <span className="font-bold text-amber-300">
-                      {formatNumber(prodCalc.bundleTotal)} {bundle.currency}
+                  <div className="flex items-baseline gap-1.5 mt-0.5">
+                    <span className="text-2xl lg:text-3xl font-black text-emerald-400">
+                      {formatNumber(product.bundleUnitPrice)}
+                    </span>
+                    <span className="text-xs font-bold text-emerald-300">{bundle.currency}</span>
+                    <span className="text-[11px] font-bold bg-amber-500/25 text-amber-300 px-2 py-0.5 rounded">
+                      للقطعة
                     </span>
                   </div>
-                )}
+                </div>
               </div>
             </div>
           );
@@ -160,25 +231,29 @@ export const TemplatePromoDiscount: React.FC<TemplateProps> = ({ bundle, calc })
       <div className="relative z-10 mt-3 p-5 rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-2 border-amber-500/60 shadow-2xl flex flex-wrap items-center justify-between gap-4">
         {/* Savings Badge Left */}
         <div className="flex items-center gap-5">
-          <div className="bg-gradient-to-br from-amber-500 to-orange-600 text-slate-950 p-3.5 rounded-xl font-black text-center min-w-[90px] shadow-lg">
-            <span className="text-[10px] uppercase tracking-wider block">خصم</span>
+          <div className="bg-gradient-to-br from-amber-500 to-orange-600 text-slate-950 p-3.5 rounded-xl font-black text-center min-w-[100px] shadow-lg">
+            <span className="text-[10px] uppercase tracking-wider block font-bold">نسبة الخصم</span>
             <span className="text-2xl lg:text-3xl font-black block leading-none">-{calc.discountPercentage}%</span>
           </div>
 
-          <div>
-            <div className="text-sm font-semibold text-slate-400 line-through">
-              السعر الأصلي: {formatNumber(calc.totalOriginalPrice)} {bundle.currency}
+          <div className="space-y-1">
+            <div className="text-sm font-bold text-slate-300 flex items-center gap-2">
+              <span>السعر الأصلي:</span>
+              <span className="line-through decoration-rose-500 decoration-2 text-rose-400 font-extrabold text-base">
+                {formatNumber(calc.totalOriginalPrice)} {bundle.currency}
+              </span>
             </div>
-            <div className="text-lg font-black text-amber-400 mt-0.5">
-              وفرت: {formatNumber(calc.totalSavings)} {bundle.currency}
+            <div className="text-xl font-black text-amber-400 flex items-center gap-2">
+              <span>وفرت:</span>
+              <span className="text-2xl">{formatNumber(calc.totalSavings)} {bundle.currency}</span>
             </div>
           </div>
         </div>
 
         {/* Big Bundle Price Right */}
-        <div className="bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 px-7 py-3 rounded-xl shadow-xl shadow-emerald-500/30 flex items-center gap-3">
+        <div className="bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 px-8 py-3.5 rounded-xl shadow-xl shadow-emerald-500/30 flex items-center gap-3">
           <div className="text-right">
-            <span className="text-[10px] font-black uppercase tracking-widest block text-slate-900">
+            <span className="text-[11px] font-black uppercase tracking-widest block text-slate-900">
               سعر العرض الحصري
             </span>
             <span className="text-3xl lg:text-4xl font-black tracking-tight leading-none text-slate-950">
