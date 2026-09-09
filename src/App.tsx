@@ -5,6 +5,7 @@ import { Header } from './components/Header';
 import { BundleForm } from './components/BundleForm';
 import { CanvasPreview } from './components/CanvasPreview';
 import { SavedBundlesModal } from './components/SavedBundlesModal';
+import { assetUrl } from './utils/assets';
 
 const STORAGE_KEY = 'albadry_ugreen_bundles_v3';
 const ACTIVE_ID_KEY = 'albadry_ugreen_active_id_v3';
@@ -84,7 +85,7 @@ export function App() {
           quantity: 5,
           originalUnitPrice: 850,
           bundleUnitPrice: 620,
-          imageUrl: '/assets/products/charger.svg',
+          imageUrl: assetUrl('assets/products/charger.svg'),
           imageFit: 'contain'
         },
         {
@@ -94,7 +95,7 @@ export function App() {
           quantity: 10,
           originalUnitPrice: 220,
           bundleUnitPrice: 160,
-          imageUrl: '/assets/products/cable.svg',
+          imageUrl: assetUrl('assets/products/cable.svg'),
           imageFit: 'contain'
         }
       ],

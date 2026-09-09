@@ -63,27 +63,27 @@ export const SAMPLE_PRODUCTS = [
     sku: 'PB200-GRY',
     originalUnitPrice: 1400,
     bundleUnitPrice: 1033,
-    imageUrl: '/assets/products/ugreen-powerbank-real.png'
+    imageUrl: assetUrl('assets/products/ugreen-powerbank-real.png')
   },
   {
     name: 'UGREEN USB-C to USB-C Braided Cable 1M',
     sku: 'US176-BLK-1M',
     originalUnitPrice: 232,
     bundleUnitPrice: 170,
-    imageUrl: '/assets/products/ugreen-cable-real.png'
+    imageUrl: assetUrl('assets/products/ugreen-cable-real.png')
   },
   {
     name: 'UGREEN 2-Port GaN Fast Charger 30W',
     sku: 'CD319-30W',
     originalUnitPrice: 600,
     bundleUnitPrice: 445,
-    imageUrl: '/assets/products/ugreen-charger-real.png'
+    imageUrl: assetUrl('assets/products/ugreen-charger-real.png')
   },
   {
     name: 'UGREEN WS207 HiTune P3 True Wireless Earbuds',
     sku: 'WS207-WHT',
     originalUnitPrice: 1000,
     bundleUnitPrice: 737,
-    imageUrl: '/assets/products/earbuds.svg'
+    imageUrl: assetUrl('assets/products/earbuds.svg')
   }
 ];

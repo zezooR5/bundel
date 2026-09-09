@@ -7,7 +7,6 @@ export interface ExportOptions {
   pixelRatio?: number;
   filename?: string;
 }
-
 export async function exportBundleImage(
   element: HTMLElement,
   options: ExportOptions = { format: 'png', quality: 0.95, pixelRatio: 2 }
@@ -15,10 +14,11 @@ export async function exportBundleImage(
   const pixelRatio = options.pixelRatio || 2;
   const quality = options.quality ?? 0.95;
 
-  const config = {
+  const baseConfig = {
     quality,
     pixelRatio,
-    cacheBust: true,
+    cacheBust: false,
+    skipFonts: true,
     style: {
       transform: 'none',
       margin: '0'
@@ -27,10 +27,26 @@ export async function exportBundleImage(
 
   try {
     let dataUrl = '';
-    if (options.format === 'jpeg') {
-      dataUrl = await toJpeg(element, config);
-    } else {
-      dataUrl = await toPng(element, config);
+    
+    // Attempt export with primary config, with automatic fallback if browser memory/CORS limits hit
+    try {
+      if (options.format === 'jpeg') {
+        dataUrl = await toJpeg(element, baseConfig);
+      } else {
+        dataUrl = await toPng(element, baseConfig);
+      }
+    } catch (primaryErr) {
+      console.warn('Export with pixelRatio 2 failed, falling back to 1.5x/1x:', primaryErr);
+      const fallbackConfig = { ...baseConfig, pixelRatio: Math.min(pixelRatio, 1.5) };
+      if (options.format === 'jpeg') {
+        dataUrl = await toJpeg(element, fallbackConfig);
+      } else {
+        dataUrl = await toPng(element, fallbackConfig);
+      }
+    }
+
+    if (!dataUrl) {
+      throw new Error('Generated empty image data');
     }
 
     // Trigger download
@@ -59,15 +75,24 @@ export async function exportBundleImage(
 }
 
 export async function copyBundleToClipboard(element: HTMLElement, pixelRatio = 2): Promise<boolean> {
+  const baseConfig = {
+    pixelRatio,
+    cacheBust: false,
+    skipFonts: true,
+    style: {
+      transform: 'none',
+      margin: '0'
+    }
+  };
+
   try {
-    const blob = await toBlob(element, {
-      pixelRatio,
-      cacheBust: true,
-      style: {
-        transform: 'none',
-        margin: '0'
-      }
-    });
+    let blob: Blob | null = null;
+    try {
+      blob = await toBlob(element, baseConfig);
+    } catch (primaryErr) {
+      console.warn('Copy to clipboard primary attempt failed, retrying with fallback:', primaryErr);
+      blob = await toBlob(element, { ...baseConfig, pixelRatio: 1.5 });
+    }
 
     if (!blob) throw new Error('Could not create image blob');
 
@@ -88,3 +113,4 @@ export async function copyBundleToClipboard(element: HTMLElement, pixelRatio = 2
     return false;
   }
 }
+

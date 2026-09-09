@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Bundle, Product, TemplateId, AspectRatio } from '../types/bundle';
 import { calculateBundle, formatNumber } from '../utils/calculations';
+import { assetUrl } from '../utils/assets';
 import { SAMPLE_PRODUCTS } from '../data/defaultBundle';
 import { 
   Info, 
@@ -57,7 +58,7 @@ export const BundleForm: React.FC<BundleFormProps> = ({ bundle, onChange, lang }
       quantity: customProduct?.quantity || 1,
       originalUnitPrice: customProduct?.originalUnitPrice || 500,
       bundleUnitPrice: customProduct?.bundleUnitPrice || 380,
-      imageUrl: customProduct?.imageUrl || '/assets/products/charger.svg',
+      imageUrl: customProduct?.imageUrl || assetUrl('assets/products/charger.svg'),
       imageFit: 'contain'
     };
     onChange({ ...bundle, products: [...bundle.products, newProd], updatedAt: new Date().toISOString() });
